@@ -1,0 +1,4 @@
+.DS_Store
+*.bak
+*.log
+.claude/hooks/summarize-session.log
