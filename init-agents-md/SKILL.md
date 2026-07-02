@@ -10,8 +10,9 @@ description: |
     - agents：只写 AGENTS.md（跨工具开放标准）
     - both：AGENTS.md 放跨工具通用 + CLAUDE.md 做薄壳引用
     - migrate：把现有 CLAUDE.md 内容拆/转到 AGENTS.md（或反向）
-  本 skill 只管「约定层」，不装 SessionEnd hook、不初始化 TASKS.md——
-  那些归 [`init-session-notes`](../init-session-notes/SKILL.md) skill。
+  本 skill 只管「约定层」：不装 SessionEnd hook——那归
+  [`init-session-notes`](../init-session-notes/SKILL.md)；不初始化 TASKS.md 任务管理——
+  那归 [`init-agent-task-md`](../init-agent-task-md/SKILL.md)。
   使用：/init-agents-md；或当用户说「为这个项目加上分层约定」「把 CLAUDE.md 迁移到 AGENTS.md」时也命中本 skill。
 license: MIT
 compatibility: claude-code
@@ -27,7 +28,7 @@ allowed-tools:
 
 为项目初始化**稳定约定层**——把架构、命名、build/test 命令、目录边界、依赖方向这类几乎不变的全局规则写到 always-on memory 文件（CLAUDE.md 或 AGENTS.md），并按模块拓扑写嵌套 memory。
 
-> ⚠️ 该 skill 只写 memory 文件。状态层（SessionEnd hook + `docs/session-notes.md` + `docs/TASKS.md`）属于另一个 skill：[`init-session-notes`](../init-session-notes/SKILL.md)。两者**完全独立**，可单装；想要全套就两个都跑一次。
+> ⚠️ 该 skill 只写 memory 文件。会话归档（SessionEnd hook + `docs/session-notes.md`）归 [`init-session-notes`](../init-session-notes/SKILL.md)；任务管理（`docs/TASKS.md` + CHANGELOG 联动）归 [`init-agent-task-md`](../init-agent-task-md/SKILL.md)。三者**完全独立**，可单装；想要全套就各跑一次。
 
 ---
 
