@@ -128,6 +128,17 @@ done
 - 只放**几乎不变**的全局规则；任务进度、决策日志、踩坑记录不要写在这里，让它们留在 session-notes / TASKS。
 - 控制长度。always-on 文件越长越杂，单条规则的有效权重越低。
 
+### 分支纪律（agent 行为规则）
+
+开新分支**必须用 `git worktree` 隔离**，禁止在主工作区直接 `git checkout -b`：
+
+```bash
+git worktree add ../<repo>-<branch> -b <branch>
+```
+
+- 主工作区始终停留在主分支，保持干净、可随时查阅与对照。
+- 分支合并后用 `git worktree remove <path>` 清理，再删除分支。
+
 ### 分层路由（agent 行为规则）
 
 当本会话中产生以下任一类信息时，你（Claude）**主动**判断它属于哪一层，并提示用户写入对应文件——而不是顺手堆进本文件：
@@ -184,6 +195,17 @@ done
 - 只放**几乎不变**的全局规则；任务进度、决策日志、踩坑记录留在 session-notes / TASKS。
 - 保持精简。always-on 文件过长会稀释单条规则权重、抬高 agent 探索成本。
 - 子目录可放各自的 `AGENTS.md`（如 `frontend/AGENTS.md` `backend/AGENTS.md`），按目录最近优先生效。
+
+### 分支纪律（agent 行为规则）
+
+开新分支**必须用 `git worktree` 隔离**，禁止在主工作区直接 `git checkout -b`：
+
+```bash
+git worktree add ../<repo>-<branch> -b <branch>
+```
+
+- 主工作区始终停留在主分支，保持干净、可随时查阅与对照。
+- 分支合并后用 `git worktree remove <path>` 清理，再删除分支。
 
 ### 分层路由（agent 行为规则）
 
