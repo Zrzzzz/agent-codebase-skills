@@ -10,7 +10,7 @@
 | --- | --- | --- |
 | [`init-agents-md`](./init-agents-md/SKILL.md) | **稳定约定层** | 把架构 / 命名 / build-test-lint 命令 / 目录边界 / 依赖方向这些「几乎不变」的规则写进 `CLAUDE.md` 或 `AGENTS.md`（跨工具开放标准），并按 monorepo / 前后端模块拓扑生成嵌套 memory；支持 `claude` / `agents` / `both` / `migrate` 四种模式 |
 | [`init-session-notes`](./init-session-notes/SKILL.md) | **会话归档层** | 装一个 SessionEnd hook：每次会话结束自动用 `claude -p` 提炼 3-8 条要点追加进 `docs/session-notes.md`；超过 45KB 自动 LLM 压缩去重 |
-| [`init-agent-task-md`](./init-agent-task-md/SKILL.md) | **任务管理层** | 初始化 `docs/TASKS.md`（T-XXX 编号 + 与分支/部署联动的生命周期：合 develop → ✅ 已完成，合 beta 部署 dev → 🗄️ 历史归档，合 main 上线 → 提炼进 `CHANGELOG.md`）+ CHANGELOG 骨架；已装 init-session-notes 时可选把「任务推进自动检测」挂进其 worker |
+| [`init-agent-task-md`](./init-agent-task-md/SKILL.md) | **任务管理层**（v2 · 拆文件） | 每个任务独立成 `docs/tasks/T-XXX.md`（frontmatter + 子任务清单），多 agent 并发写入天然无冲突；`docs/TASKS.md` 由 `scripts/tasks-index.sh` 按 marker 区自动生成索引；`scripts/tasks-new.sh` 用 mkdir 锁原子分配 T-XXX 编号防撞号；生命周期不变（合 develop → ✅ 已完成，合 beta → 🗄️ 历史归档，合 main → 提炼进 `CHANGELOG.md`）+ CHANGELOG 骨架；已装 init-session-notes 时可选把「自动刷索引 + 任务推进检测」挂进其 worker；老 v1 仓（monolith TASKS.md）重跑本 skill 会自动迁移 |
 
 > **可复用流程层**（`.claude/skills/*`）不由 skill 初始化——那是用户在跟 agent 协作过程中**临时沉淀**出来的（部署 / CI / 压测 / 远程数据库迁移这类多步外部命令流程），skill 都内置「主动提示用户把它沉淀为 skill」的行为规则，所以你只要装了它们，agent 自己会在合适的时机提醒。
 
