@@ -2,3 +2,4 @@
 *.bak
 *.log
 .claude/hooks/summarize-session.log
+.drafts/

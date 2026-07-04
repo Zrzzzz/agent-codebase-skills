@@ -13,11 +13,20 @@
 
 ## 一键安装
 
+**方式一：Claude Code plugin（推荐，在任意 Claude Code 会话里执行）**：
+
+```text
+/plugin marketplace add Zrzzzz/agent-codebase-skills
+/plugin install agent-codebase-skills@agent-codebase-skills
+```
+
+**方式二：安装脚本**（软链进 `~/.claude/skills/`，`git pull` 即可更新）：
+
 ```bash
 curl -fsSL https://raw.githubusercontent.com/Zrzzzz/agent-codebase-skills/main/install.sh | bash
 ```
 
-脚本会把仓库 clone 到 `~/.agent-codebase-skills` 并软链进 `~/.claude/skills/`；以后重跑脚本（或在 clone 目录 `git pull`）即可更新。想手动装见 [手动安装](#手动安装)。
+两种方式**二选一**，都装会重复注册。想手动装见 [手动安装](#手动安装)。
 
 ## 收录的 skills
 
@@ -108,7 +117,7 @@ skill 是**幂等**的——重跑会用 sentinel 块替换已生成的部分，
 ## 路线图
 
 - [ ] 生成模板的英文版（memory 文件、任务文件、hook 提示词）
-- [ ] 打包为 Claude Code plugin，支持一条命令 `/plugin install`
+- [x] 打包为 Claude Code plugin，支持一条命令 `/plugin install`
 - [ ] 每个 skill 的终端 GIF 演示（vhs 录制）
 
 ## 协议

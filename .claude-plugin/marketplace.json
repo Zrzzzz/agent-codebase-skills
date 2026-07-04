@@ -1,0 +1,22 @@
+{
+  "name": "agent-codebase-skills",
+  "owner": {
+    "name": "Zrzzzz"
+  },
+  "description": "Claude Code skills for using AI agents to develop and maintain large, long-lived codebases across sessions",
+  "plugins": [
+    {
+      "name": "agent-codebase-skills",
+      "source": "./",
+      "description": "Layered memory for AI agents: AGENTS.md/CLAUDE.md conventions + auto session notes + concurrent-safe task management",
+      "version": "1.0.0",
+      "author": {
+        "name": "Zrzzzz"
+      },
+      "repository": "https://github.com/Zrzzzz/agent-codebase-skills",
+      "license": "MIT",
+      "keywords": ["agents-md", "memory", "session-notes", "task-management"],
+      "category": "productivity"
+    }
+  ]
+}

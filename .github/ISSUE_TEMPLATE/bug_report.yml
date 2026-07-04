@@ -1,0 +1,36 @@
+name: Bug report
+description: A skill misbehaved — wrong files generated, idempotency broken, script error / skill 行为异常
+labels: [bug]
+body:
+  - type: dropdown
+    id: skill
+    attributes:
+      label: Which skill?
+      options:
+        - init-agents-md
+        - init-session-notes
+        - init-agent-task-md
+        - install.sh / repo infrastructure
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: What did you run, what did you expect, what did you get instead? Paste the skill's output report if you have it. / 跑了什么、预期什么、实际得到什么
+    validations:
+      required: true
+  - type: textarea
+    id: project-shape
+    attributes:
+      label: Project shape
+      description: "What kind of project was the skill run on? (monorepo? frontend/backend split? pre-existing CLAUDE.md/TASKS.md? branch model?)"
+    validations:
+      required: false
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: "OS, Claude Code version (`claude --version`), and how you installed the skills (install.sh / symlink / copied SKILL.md / plugin)."
+    validations:
+      required: false

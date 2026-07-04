@@ -13,11 +13,20 @@ An agent doesn't stay effective in a codebase by remembering harder. It stays ef
 
 ## Quick install
 
+**As a Claude Code plugin** (recommended — inside any Claude Code session):
+
+```text
+/plugin marketplace add Zrzzzz/agent-codebase-skills
+/plugin install agent-codebase-skills@agent-codebase-skills
+```
+
+**Or via the install script** (symlinks into `~/.claude/skills/`, updates with `git pull`):
+
 ```bash
 curl -fsSL https://raw.githubusercontent.com/Zrzzzz/agent-codebase-skills/main/install.sh | bash
 ```
 
-This clones the repo to `~/.agent-codebase-skills` and symlinks the skills into `~/.claude/skills/`. Re-run the script (or `git pull` in the clone) to update. Prefer manual steps? See [Manual install](#manual-install).
+Pick one — installing both registers the skills twice. Prefer manual steps? See [Manual install](#manual-install).
 
 ## The skills
 
@@ -109,7 +118,7 @@ All skills are **idempotent** — re-running replaces only the skill-managed sen
 ## Roadmap
 
 - [ ] English versions of the generated templates (memory files, task files, hook prompts)
-- [ ] Package as a Claude Code plugin for one-command `/plugin install`
+- [x] Package as a Claude Code plugin for one-command `/plugin install`
 - [ ] Terminal GIF demos (vhs) of each skill run
 
 ## License
