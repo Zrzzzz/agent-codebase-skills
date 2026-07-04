@@ -25,7 +25,7 @@ curl -fsSL https://raw.githubusercontent.com/Zrzzzz/agent-codebase-skills/main/i
 | --- | --- | --- |
 | [`init-agents-md`](./init-agents-md/SKILL.md) | **稳定约定层** | 把架构 / 命名 / build-test-lint 命令 / 目录边界 / 依赖方向这些「几乎不变」的规则写进 `CLAUDE.md` 或 `AGENTS.md`（跨工具开放标准），并按 monorepo / 前后端模块拓扑生成嵌套 memory；支持 `claude` / `agents` / `both` / `migrate` 四种模式 |
 | [`init-session-notes`](./init-session-notes/SKILL.md) | **会话归档层** | 装一个 SessionEnd hook：每次会话结束自动用 `claude -p` 提炼 3-8 条要点追加进 `docs/session-notes.md`；超过 45KB 自动 LLM 压缩去重 |
-| [`init-agent-task-md`](./init-agent-task-md/SKILL.md) | **任务管理层**（v2 · 拆文件） | 每个任务独立成 `docs/tasks/T-XXX.md`（frontmatter + 子任务清单），多 agent 并发写入天然无冲突；`docs/TASKS.md` 由 `scripts/tasks-index.sh` 按 marker 区自动生成索引；`scripts/tasks-new.sh` 用 mkdir 锁原子分配 T-XXX 编号防撞号；生命周期与分支联动（合 develop → ✅ 已完成，合 beta → 🗄️ 历史归档，合 main → 提炼进 `CHANGELOG.md`）+ CHANGELOG 骨架；已装 init-session-notes 时可选把「自动刷索引 + 任务推进检测」挂进其 worker；老 v1 仓（monolith TASKS.md）重跑本 skill 会自动迁移 |
+| [`init-agent-task-md`](./init-agent-task-md/SKILL.md) | **任务管理层**（v2 · 拆文件） | 每个任务独立成 `docs/tasks/T-XXX.md`（frontmatter + 子任务清单），多 agent 并发写入天然无冲突；`docs/TASKS.md` 由 `scripts/tasks-index.sh` 按 marker 区自动生成索引；`scripts/tasks-new.sh` 用 mkdir 锁原子分配 T-XXX 编号防撞号；`scripts/tasks-status.sh` 一步改状态 + 更新 updated + 自动刷索引；`scripts/tasks-release.sh` 上线时打印 CHANGELOG 片段并归档任务文件；生命周期与分支联动（合 develop → ✅ 已完成，合 beta → 🗄️ 历史归档，合 main → 提炼进 `CHANGELOG.md`）+ CHANGELOG 骨架；已装 init-session-notes 时可选把「自动刷索引 + 任务推进检测」挂进其 worker；老 v1 仓（monolith TASKS.md）重跑本 skill 会自动迁移 |
 
 三个 skill **完全独立、可单装**：
 
