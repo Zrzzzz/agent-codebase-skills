@@ -1,7 +1,7 @@
 {
   "name": "agent-codebase-skills",
   "displayName": "Agent Codebase Skills",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Layered memory for AI agents in long-lived codebases: AGENTS.md/CLAUDE.md conventions, auto session notes, concurrent-safe task management",
   "author": {
     "name": "Zrzzzz",

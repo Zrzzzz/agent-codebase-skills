@@ -72,9 +72,29 @@ git worktree add ../<repo>-<branch> -b <branch>
 
 <!-- init-agents-md:end -->
 
+<!-- BEGIN:TASK-PROTOCOL (skill-managed: init-agent-task-md v3.0.0) -->
+## 任务入口协议
+
+**用户报告的任何 bug、提出的任何需求：动代码之前，先登记任务、切对应分支。**
+
+1. 判断 type：`bugfix`（现有行为不对）/ `feat`（新能力）/ `chore`（重构、依赖、配置、纯文档）/ `hotfix`（线上事故且等不了 dev 联调——任务描述必须写清「命中场景 → 用户影响 → 为什么等不了」，写不出就用 bugfix）。
+2. 登记：`bash scripts/tasks-new.sh <type> <slug> "<一句话标题>" [priority]`，或直接按 `docs/tasks/` 现有文件的模板 Write `docs/tasks/T-<slug>.md`（文件名即 ID，无编号无锁，任何 worktree 里直接建；`T-<slug>.md` 已存在说明别人在做同一件事——先读它）。
+3. 切 `<type>/<slug>` 分支，然后才开始改代码。pre-commit hook 会校验：feat/bugfix/hotfix 分支没有对应任务文件时 commit 会被拦。
+
+**免登记白名单**（走 `chore/*` 分支或现有分支顺带，不建任务文件）：typo、纯注释/纯文档、单文件 ≤ 10 行且无行为变化。有行为变化就不是 chore 顺带——别用 chore 分支绕过校验。
+
+**状态流转 = 直接 Edit 任务文件 frontmatter 的 `status`**（todo → doing → done → archived），改完随代码 commit，索引 `docs/TASKS.md` 由 hook 自动刷新，不用跑任何脚本：
+- 开工：`status: doing` + 填 `agent` / `files`；
+- merge 到 `dev` 联调通过：填 `dev_verified: <日期>`，然后 `status: done`；
+- PR 合入 `main`：`status: archived`；
+- 打 tag 部署 prod：`bash scripts/tasks-release.sh T-<slug>`（条目自动进 CHANGELOG 的 Unreleased 段并归档任务文件）；发版切号：`bash scripts/tasks-release.sh --cut <版本号>`。
+
+**分支纪律**：`dev` 是 rolling 集成沙盒（可被 `reset --hard main`）；禁止 dev → main、禁止基于 dev 拉分支；每个任务从 `main` 拉分支、独立 PR 回 `main` 发版；hotfix 修完记得开 `chore/backport-hotfix-<slug>` 合回 dev。新 clone 后跑一次 `git config core.hooksPath .githooks` 启用流程 hook。
+<!-- END:TASK-PROTOCOL -->
+
 ## 项目约定（手写区——skill 重跑不会碰这里）
 
 - 技术栈：pnpm monorepo；`frontend/` React 19 + Vite，`backend/` FastAPI + PostgreSQL。
 - 全仓命令：`pnpm lint && pnpm test`（提交前必须过）；后端另有 `uv run pytest backend/tests/`。
-- 提交规范：Conventional Commits；分支模型 `develop` → `beta` → `main`。
+- 提交规范：Conventional Commits；分支模型「独立发版」：`dev`（rolling 集成沙盒）+ `main`（发版源），每个任务分支独立 PR 到 main 打 tag 发版。
 - 依赖方向：`frontend` 只能调 `backend` 的 `/api/v1/*`，禁止直连数据库或共享代码。

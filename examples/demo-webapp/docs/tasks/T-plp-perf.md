@@ -1,12 +1,14 @@
 ---
-id: T-001
+id: T-plp-perf
 title: "[frontend] 商品列表首屏加载优化（LCP 3.4s → 1.6s）"
 status: done
 type: feat
+priority: 3
 agent: "@claude-b"
 branch: feat/plp-perf
+release: independent
+dev_verified: "2026-07-01"
 created: 2026-06-29
-updated: 2026-07-01
 files: frontend/src/pages/plp/**
 ---
 

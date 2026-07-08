@@ -1,12 +1,14 @@
 ---
-id: T-003
+id: T-oversell-lock
 title: "[backend] 修复库存超卖：下单扣减未加行锁"
 status: todo
-type: fix
+type: bugfix
+priority: 1
 agent: ""
 branch: bugfix/oversell-lock
+release: independent
+dev_verified: ""
 created: 2026-07-03
-updated: 2026-07-03
 files: backend/api/orders.py, backend/models/inventory.py
 ---
 

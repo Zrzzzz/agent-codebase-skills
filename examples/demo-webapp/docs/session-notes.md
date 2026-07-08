@@ -13,6 +13,6 @@
 
 ## 2026-07-01 18:02
 
-- T-001 商品列表首屏 LCP 从 3.4s 降到 1.6s：首屏 4 张图改 AVIF + preload，其余懒加载。
+- T-plp-perf 商品列表首屏 LCP 从 3.4s 降到 1.6s：首屏 4 张图改 AVIF + preload，其余懒加载。
 - 新约定：所有性能优化必须在本文件记录 baseline 前后数字，方便回归对照。
 - dev 服 nginx 对 `/api` 有 10s proxy_read_timeout，长任务接口一律改异步任务队列。

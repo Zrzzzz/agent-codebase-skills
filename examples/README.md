@@ -10,8 +10,9 @@
 | [`CLAUDE.md`](./demo-webapp/CLAUDE.md) | `/init-agents-md`（`both` 模式的 Claude Code 薄壳，`@import` 指向 AGENTS.md 与状态文件） |
 | [`frontend/AGENTS.md`](./demo-webapp/frontend/AGENTS.md) | `/init-agents-md`（嵌套模块 memory，只写该模块的 delta） |
 | [`docs/session-notes.md`](./demo-webapp/docs/session-notes.md) | `/init-session-notes` 初始化模板；此后每次会话结束由 SessionEnd hook 自动追加带时间戳的小节 |
-| [`docs/TASKS.md`](./demo-webapp/docs/TASKS.md) | `/init-agent-task-md`（marker 区内的索引由 `scripts/tasks-index.sh` 自动生成；marker 区外的「约束与决策」「踩坑与教训」手写） |
-| [`docs/tasks/T-001.md` ~ `T-003.md`](./demo-webapp/docs/tasks/) | `scripts/tasks-new.sh` 创建骨架，agent 认领后填写 frontmatter 与子任务 |
-| [`CHANGELOG.md`](./demo-webapp/CHANGELOG.md) | `/init-agent-task-md`（Keep a Changelog 骨架；条目在任务合 main 上线时从 `docs/tasks/` 提炼而来） |
+| [`docs/TASKS.md`](./demo-webapp/docs/TASKS.md) | `/init-agent-task-md`（marker 区内的索引由 git hook 调 `scripts/tasks-index.sh` 自动生成；marker 区外的「约束与决策」「踩坑与教训」手写） |
+| [`docs/tasks/T-<slug>.md`](./demo-webapp/docs/tasks/) | `scripts/tasks-new.sh` 创建骨架（或 agent 直接按模板 Write——v3 文件名即 ID，无编号无锁），认领后填写 frontmatter 与子任务 |
+| [`AGENTS.md` 的「任务入口协议」块](./demo-webapp/AGENTS.md) | `/init-agent-task-md` v3（必装 marker 块：bug / 需求 → 先登记任务再动代码；pre-commit hook 兜底校验） |
+| [`CHANGELOG.md`](./demo-webapp/CHANGELOG.md) | `/init-agent-task-md`（Keep a Changelog 骨架；条目在打 tag 发版时由 `scripts/tasks-release.sh` 自动写入 Unreleased 段） |
 
-未包含 / Not included: `scripts/tasks-index.sh`、`scripts/tasks-new.sh`（约 170 行 bash，完整内容见 [`init-agent-task-md/SKILL.md`](../init-agent-task-md/SKILL.md) Step 4）和 `.claude/hooks/` 下的两个 hook 脚本（见 [`init-session-notes/SKILL.md`](../init-session-notes/SKILL.md) Step 2/3）。
+未包含 / Not included: `scripts/tasks-index.sh`、`scripts/tasks-new.sh`、`scripts/tasks-release.sh` 与 `.githooks/pre-commit`、`.githooks/post-merge`（完整内容见 [`init-agent-task-md/SKILL.md`](../init-agent-task-md/SKILL.md) Step 4/5），以及 `.claude/hooks/` 下的两个 hook 脚本（见 [`init-session-notes/SKILL.md`](../init-session-notes/SKILL.md) Step 2/3）。

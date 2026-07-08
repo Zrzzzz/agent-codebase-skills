@@ -1,12 +1,14 @@
 ---
-id: T-002
+id: T-coupon-checkout
 title: "[frontend] 结算页接入优惠券选择与抵扣展示"
 status: doing
 type: feat
+priority: 3
 agent: "@claude-a"
 branch: feat/coupon-checkout
+release: independent
+dev_verified: ""
 created: 2026-07-02
-updated: 2026-07-03
 files: frontend/src/pages/checkout/**, frontend/src/api/client.ts
 ---
 
@@ -23,4 +25,4 @@ files: frontend/src/pages/checkout/**, frontend/src/api/client.ts
 
 ## 备注
 
-后端接口已在 develop 就绪；UI 稿见 Figma「checkout-coupon-v2」。
+后端接口已在 dev 就绪；UI 稿见 Figma「checkout-coupon-v2」。
