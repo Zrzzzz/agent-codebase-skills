@@ -1,6 +1,6 @@
 ---
 name: init-agent-task-md
-version: 3.0.0
+version: 3.1.0
 description: |
   为项目初始化「任务管理层」v3——协调靠结构消除、纪律靠 hook 兜底、脚本只留便利：
   1. docs/tasks/T-<slug>.md：每个任务一份独立文件，**文件名即 ID**——无编号、
@@ -56,7 +56,7 @@ v3 的三条设计原则（对应 v2 暴露的三个痛点）：
 ## Step 0：探测项目状态 + 已装版本
 
 ```bash
-CURRENT_VERSION="3.0.0"
+CURRENT_VERSION="3.1.0"
 
 git rev-parse --git-dir 2>/dev/null >/dev/null && echo "git=yes" || echo "git=no"
 git branch -a 2>/dev/null | grep -E 'develop|dev|beta|main|master' | head -10
@@ -154,7 +154,8 @@ echo "protocol=${PROTO_FILE:-absent}"
 ### Path C · 已装 v3，重装/升级
 
 - 覆盖 3 个脚本（Step 4 最新版）+ 2 个 hook（Step 5 最新版）；
-- marker 区语法变了就同步替换 marker 之间的注释文案；**手写段一律不动**；
+- **CLAUDE.md / AGENTS.md 里 `<!-- BEGIN:TASK-PROTOCOL ... --> ↔ <!-- END:TASK-PROTOCOL -->` 之间整块替换成 Step 7 最新版**（marker 块是 skill-managed，marker 外的内容一律不动）；
+- TASKS.md 的索引 marker 语法变了就同步替换 marker 之间的注释文案；**手写段一律不动**；
 - 跑 `bash scripts/tasks-index.sh` 重新生成一次索引。
 
 ---
@@ -741,7 +742,7 @@ git config core.hooksPath .githooks
 目标文件：项目有 `AGENTS.md` 用 AGENTS.md（跨工具生效），否则用 `CLAUDE.md`；两者都没有就创建 `CLAUDE.md` 只放这一段并提示用户之后跑 `/init-agents-md` 补全约定层。追加以下 marker 块（重跑 skill 按 marker 整块替换；`dev`/`main` 按 Step 0 探测的分支模型替换）：
 
 ```markdown
-<!-- BEGIN:TASK-PROTOCOL (skill-managed: init-agent-task-md v3.0.0) -->
+<!-- BEGIN:TASK-PROTOCOL (skill-managed: init-agent-task-md v3.1.0) -->
 ## 任务入口协议
 
 **用户报告的任何 bug、提出的任何需求：动代码之前，先登记任务、切对应分支。**
@@ -757,6 +758,14 @@ git config core.hooksPath .githooks
 - merge 到 `dev` 联调通过：填 `dev_verified: <日期>`，然后 `status: done`；
 - PR 合入 `main`：`status: archived`；
 - 打 tag 部署 prod：`bash scripts/tasks-release.sh T-<slug>`（条目自动进 CHANGELOG 的 Unreleased 段并归档任务文件）；发版切号：`bash scripts/tasks-release.sh --cut <版本号>`。
+
+**发版后清理（部署 prod 完成后必做）**：跑完 `tasks-release.sh`（= 该任务已上 prod）之后，**主动**检查该任务对应的 `<type>/<slug>` 本地分支与 worktree 是否还在，如果在就列出来问用户是否清理——**默认不自动删**。执行前必须先看一眼：
+- 分支有未推送到 `origin` 的 commit → 先提示，别默默丢工作；
+- worktree 有 uncommitted 改动 / untracked 文件（`git -C <wt> status --porcelain`）→ 先提示；
+- worktree 是当前所在 worktree → 不能删自己，提示用户先切走；
+- 清理动作：`git worktree remove <path>`（有变更用 `--force` 前先确认）、`git branch -d <branch>`（未合入用 `-D` 前先确认）、可选 `git push origin --delete <branch>`（远程分支要另问）。
+
+粒度（逐个确认 / 批量确认 / dry-run 先看）由 agent 根据数量和风险自行判断，不用死板套模板。
 
 **分支纪律**：`dev` 是 rolling 集成沙盒（可被 `reset --hard main`）；禁止 dev → main、禁止基于 dev 拉分支；每个任务从 `main` 拉分支、独立 PR 回 `main` 发版；hotfix 修完记得开 `chore/backport-hotfix-<slug>` 合回 dev。新 clone 后跑一次 `git config core.hooksPath .githooks` 启用流程 hook。
 <!-- END:TASK-PROTOCOL -->
@@ -834,7 +843,7 @@ fi
 **Path A（全新装）**：
 
 ```
-✅ 任务管理层已初始化（v3.0.0 · 无编号 + hook 自动化）：
+✅ 任务管理层已初始化（v3.1.0 · 无编号 + hook 自动化）：
 
   • docs/tasks/              （新建，空目录）
   • docs/TASKS.md            （新建，含 marker 索引区）
@@ -855,7 +864,7 @@ fi
 **Path B（v1/v2 → v3 迁移）**：
 
 ```
-✅ 任务管理层已迁移到 v3.0.0（从 [v1/v2.x]）：
+✅ 任务管理层已迁移到 v3.1.0（从 [v1/v2.x]）：
 
   • docs/tasks/T-<slug>.md   （N 个任务文件已按 branch 后缀改名 + 更新 frontmatter）
   • frontmatter 变更          （id 改 slug 形式；删 updated；加 priority: 3；type: fix → bugfix）
@@ -875,7 +884,7 @@ fi
 **Path C（v3 重装/升级）**：
 
 ```
-✅ 任务管理层已更新到 v3.0.0：
+✅ 任务管理层已更新到 v3.1.0：
 
   • scripts/*.sh、.githooks/*（已覆盖到最新版）
   • docs/TASKS.md            （索引已重新生成；正文与手写段未动）
