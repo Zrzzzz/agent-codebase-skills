@@ -72,7 +72,7 @@ git worktree add ../<repo>-<branch> -b <branch>
 
 <!-- init-agents-md:end -->
 
-<!-- BEGIN:TASK-PROTOCOL (skill-managed: init-agent-task-md v3.0.0) -->
+<!-- BEGIN:TASK-PROTOCOL (skill-managed: init-agent-task-md v3.1.0) -->
 ## 任务入口协议
 
 **用户报告的任何 bug、提出的任何需求：动代码之前，先登记任务、切对应分支。**
@@ -88,6 +88,14 @@ git worktree add ../<repo>-<branch> -b <branch>
 - merge 到 `dev` 联调通过：填 `dev_verified: <日期>`，然后 `status: done`；
 - PR 合入 `main`：`status: archived`；
 - 打 tag 部署 prod：`bash scripts/tasks-release.sh T-<slug>`（条目自动进 CHANGELOG 的 Unreleased 段并归档任务文件）；发版切号：`bash scripts/tasks-release.sh --cut <版本号>`。
+
+**发版后清理（部署 prod 完成后必做）**：跑完 `tasks-release.sh`（= 该任务已上 prod）之后，**主动**检查该任务对应的 `<type>/<slug>` 本地分支与 worktree 是否还在，如果在就列出来问用户是否清理——**默认不自动删**。执行前必须先看一眼：
+- 分支有未推送到 `origin` 的 commit → 先提示，别默默丢工作；
+- worktree 有 uncommitted 改动 / untracked 文件（`git -C <wt> status --porcelain`）→ 先提示；
+- worktree 是当前所在 worktree → 不能删自己，提示用户先切走；
+- 清理动作：`git worktree remove <path>`（有变更用 `--force` 前先确认）、`git branch -d <branch>`（未合入用 `-D` 前先确认）、可选 `git push origin --delete <branch>`（远程分支要另问）。
+
+粒度（逐个确认 / 批量确认 / dry-run 先看）由 agent 根据数量和风险自行判断，不用死板套模板。
 
 **分支纪律**：`dev` 是 rolling 集成沙盒（可被 `reset --hard main`）；禁止 dev → main、禁止基于 dev 拉分支；每个任务从 `main` 拉分支、独立 PR 回 `main` 发版；hotfix 修完记得开 `chore/backport-hotfix-<slug>` 合回 dev。新 clone 后跑一次 `git config core.hooksPath .githooks` 启用流程 hook。
 <!-- END:TASK-PROTOCOL -->
